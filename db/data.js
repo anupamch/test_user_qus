@@ -30,6 +30,10 @@ const categories = [
     {
         
         "name": "Biology"
+    },
+    {
+        
+        "name": "Math"
     }
 ]
 

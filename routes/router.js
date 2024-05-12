@@ -6,42 +6,76 @@ const multer = require("multer");
 const path = require("path");
 
 var storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-            // Uploads is the Upload_folder_name
-            cb(null, "uploads");
-        },
-        filename: function (req, file, cb) {
-            cb(null, file.fieldname + "-" + Date.now() + ".jpg");
-        },
-    });
-    const maxSize = 1 * 1000 * 1000;
-    var upload = multer({
-        storage: storage,
-        limits: { fileSize: maxSize },
-        fileFilter: function (req, file, cb) {
-            // Set the filetypes, it is optional
-            var filetypes = /jpeg|jpg|png/;
-            var mimetype = filetypes.test(file.mimetype);
-     
-            var extname = filetypes.test(
-                path.extname(file.originalname).toLowerCase()
-            );
-     
-            if (mimetype && extname) {
-                return cb(null, true);
-            }
-     
-            cb(
-                "Error: File upload only supports the " +
-                    "following filetypes - " +
-                    filetypes
-            );
-        },
-     
-        // mypic is the name of file attribute
-    }).single("profile_img");
+    destination: function (req, file, cb) {
+        // Uploads is the Upload_folder_name
+        cb(null, "uploads");
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + "-" + Date.now() + ".jpg");
+    },
+});
+const maxSize = 1 * 1000 * 1000;
+var upload = multer({
+    storage: storage,
+    limits: { fileSize: maxSize },
+    fileFilter: function (req, file, cb) {
+        // Set the filetypes, it is optional
+        var filetypes = /jpeg|jpg|png/;
+        var mimetype = filetypes.test(file.mimetype);
 
+        var extname = filetypes.test(
+            path.extname(file.originalname).toLowerCase()
+        );
 
+        if (mimetype && extname) {
+            return cb(null, true);
+        }
+
+        cb(
+            "Error: File upload only supports the " +
+            "following filetypes - " +
+            filetypes
+        );
+    },
+
+    // mypic is the name of file attribute
+}).single("profile_img");
+
+var storage_csv = multer.diskStorage({
+    destination: function (req, file, cb) {
+        // Uploads is the Upload_folder_name
+        cb(null, "uploads/csv/");
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + "-" + Date.now() + ".csv");
+    },
+});
+const maxSize_csv = 1 * 1000 * 1000 * 1000;
+var uploadCSV = multer({
+    storage: storage_csv,
+    limits: { fileSize: maxSize_csv },
+    fileFilter: function (req, file, cb) {
+        // Set the filetypes, it is optional
+        var filetypes = /csv/;
+        var mimetype = filetypes.test(file.mimetype);
+
+        var extname = filetypes.test(
+            path.extname(file.originalname).toLowerCase()
+        );
+
+        if (mimetype && extname) {
+            return cb(null, true);
+        }
+
+        cb(
+            "Error: File upload only supports the " +
+            "following filetypes - " +
+            filetypes
+        );
+    },
+
+    // mypic is the name of file attribute
+}).single("qus_csv_file");
 
 /**
      * @openapi
@@ -110,7 +144,7 @@ router.post("/login", user.login)
      *        description: Server Error
      */
 
-router.get("/user/:userId",user.tokenValidation, user.getUser);
+router.get("/user/:userId", user.tokenValidation, user.getUser);
 /**
      * @openapi
      * '/user/{userId}':
@@ -160,7 +194,7 @@ router.get("/user/:userId",user.tokenValidation, user.getUser);
      *      500:
      *        description: Server Error
      */
-router.patch("/user/:userId",user.tokenValidation,upload, user.update);
+router.patch("/user/:userId", user.tokenValidation, upload, user.update);
 /**
      * @openapi
      * '/categories':
@@ -186,7 +220,7 @@ router.patch("/user/:userId",user.tokenValidation,upload, user.update);
      *      500:
      *        description: Server Error
      */
-router.get("/categories",user.tokenValidation, category.getCategory);
+router.get("/categories", user.tokenValidation, category.getCategory);
 /**
      * @openapi
      * '/questions':
@@ -230,7 +264,7 @@ router.get("/categories",user.tokenValidation, category.getCategory);
      *      500:
      *        description: Server Error
      */
-router.post("/questions",user.tokenValidation, question.insertQuestions);
+router.post("/questions", user.tokenValidation, question.insertQuestions);
 /**
      * @openapi
      * '/questions':
@@ -256,6 +290,7 @@ router.post("/questions",user.tokenValidation, question.insertQuestions);
      *      500:
      *        description: Server Error
      */
-router.get("/questions",user.tokenValidation, question.getQuestions);
+router.get("/questions", user.tokenValidation, question.getQuestions);
+router.post("/bulk-questions", user.tokenValidation, uploadCSV, question.bulkQuestions);
 
 module.exports = { router }

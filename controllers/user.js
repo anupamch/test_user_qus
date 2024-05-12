@@ -149,7 +149,7 @@ function tokenValidation(req, res, next) {
 
 function validateToken(token) {
 
-
+        console.log("In validateToken")
         let jwtSecretKey = process.env.JWT_SECRET_KEY;
 
         try {

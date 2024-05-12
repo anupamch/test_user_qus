@@ -32,7 +32,7 @@ connetDb().then(async (client) => {
         await mongo_query.createCollection(app.request.db)
         app.listen(port, () => {
             console.log("Server is running on port 3000");
-            console.log(`**** Sagger URL: http:${port}//localhost:/api-docs ****`)
+            console.log(`**** Sagger URL: http://localhost:${port}/api-docs ****`)
             console.log("****Two user will be created - ****")
             console.log("**** 1. username: john, password: user1 ****")
             console.log("**** 1. username: honey, password: user2 ****")

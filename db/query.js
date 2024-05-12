@@ -54,27 +54,27 @@ function saveBulk(db,cname,data){
 
 async function createCollection(db){
     //console.log(await checkCollectionExist(db,"users"))
-    if(await checkCollectionExist(db,"users")<0){
-     db.createCollection("users").then(async function(res) {
+    if(await checkCollectionExist(db,USERS)<0){
+     db.createCollection(USERS).then(async function(res) {
          
          console.log("User Collection created!");
 
-         await saveBulk(db,"users",default_data.user_data)
+         await saveBulk(db,USERS,default_data.user_data)
        });
     }else{
         console.log("User already there");
     }
-    if(await checkCollectionExist(db,"categories")<0){
-     db.createCollection("categories").then(async function(res) {
+    if(await checkCollectionExist(db,CATEGORIES)<0){
+     db.createCollection(CATEGORIES).then(async function(res) {
          
          console.log("categories Collection created!");
-         await saveBulk(db,"categories",default_data.user_data)
+         await saveBulk(db,CATEGORIES,default_data.categories)
        });
     }
-    if(await checkCollectionExist(db,"quentions")<0){
-     db.createCollection("quentions").then(async function(res) {
+    if(await checkCollectionExist(db,QUESTIONS)<0){
+     db.createCollection(QUESTIONS).then(async function(res) {
          
-         console.log("quentions Collection created!");
+         console.log("questions Collection created!");
          
        });
     }
